@@ -8,7 +8,7 @@
 
 let React = require('react-native');
 
-var { ActivityIndicatorIOS, AppRegistry, ScrollView, View, StyleSheet, Text } = React;
+var { ActivityIndicatorIOS, Animated, AppRegistry, ScrollView, View, StyleSheet, Text } = React;
 var _ = require('underscore')
 
 // var MyApp = React.createClass({
@@ -58,37 +58,62 @@ var _ = require('underscore')
 // });
 
 
+// var MyApp = React.createClass({
+//   getInitialState(){
+//     return { person: null};
+//   },
+
+//   componentDidMount(){
+//     fetch('https://swapi.co/api/people/1').
+//     then((result) => result.json()).
+//     then((person) => this.setState({person}));
+//   },
+
+//   render() {
+//     let { person } = this.state;
+//     return (
+//       <ScrollView
+//       style={styles.container}
+//       contentContainerStyler={styles.scrollContainer}>
+//       { person ? <Text>{person.name}
+
+//       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ut gravida lorem. Ut turpis felis, pulvinar a semper sed, adipiscing id dolor. Pellentesque auctor nisi id magna consequat sagittis. Curabitur dapibus enim sit amet elit pharetra tincidunt feugiat nisl imperdiet. Ut convallis libero in urna ultrices accumsan. Donec sed odio eros. Donec viverra mi quis quam pulvinar at malesuada arcu rhoncus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. In rutrum accumsan ultricies. Mauris vitae nisi at sem facilisis semper ac in est.
+
+//       Vivamus fermentum semper porta. Nunc diam velit, adipiscing ut tristique vitae, sagittis vel odio. Maecenas convallis ullamcorper ultricies. Curabitur ornare, ligula semper consectetur sagittis, nisi diam iaculis velit, id fringilla sem nunc vel mi. Nam dictum, odio nec pretium volutpat, arcu ante placerat erat, non tristique elit urna et turpis. Quisque mi metus, ornare sit amet fermentum et, tincidunt et orci. Fusce eget orci a orci congue vestibulum. Ut dolor diam, elementum et vestibulum eu, porttitor vel elit. Curabitur venenatis pulvinar tellus gravida ornare. Sed et erat faucibus nunc euismod ultricies ut id justo. Nullam cursus suscipit nisi, et ultrices justo sodales nec. Fusce venenatis facilisis lectus ac semper. Aliquam at massa ipsum. Quisque bibendum purus convallis nulla ultrices ultricies. Nullam aliquam, mi eu aliquam tincidunt, purus velit laoreet tortor, viverra pretium nisi quam vitae mi. Fusce vel volutpat elit. Nam sagittis nisi dui.
+
+
+//       </Text> :
+//                  <ActivityIndicatorIOS size="large" color="red" /> }
+//       </ScrollView>
+//     );
+//   }
+
+// });
+
+
 var MyApp = React.createClass({
+
   getInitialState(){
-    return { person: null};
+    return { entrance: new Animated.Value(0)};
   },
 
   componentDidMount(){
-    fetch('https://swapi.co/api/people/1').
-    then((result) => result.json()).
-    then((person) => this.setState({person}));
+    Animated.spring(this.state.entrance, {toValue: 1}).start();
   },
 
-  render() {
-    let { person } = this.state;
+  render(){
+    let opacity = this.state.entrance;
+    let rotate = this.state.entrance.interpolate({
+      inputRange: [0,1],
+      outputRange: ['-180deg', '0deg']
+    });
     return (
-      <ScrollView
-      style={styles.container}
-      contentContainerStyler={styles.scrollContainer}>
-      { person ? <Text>{person.name}
-
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ut gravida lorem. Ut turpis felis, pulvinar a semper sed, adipiscing id dolor. Pellentesque auctor nisi id magna consequat sagittis. Curabitur dapibus enim sit amet elit pharetra tincidunt feugiat nisl imperdiet. Ut convallis libero in urna ultrices accumsan. Donec sed odio eros. Donec viverra mi quis quam pulvinar at malesuada arcu rhoncus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. In rutrum accumsan ultricies. Mauris vitae nisi at sem facilisis semper ac in est.
-
-      Vivamus fermentum semper porta. Nunc diam velit, adipiscing ut tristique vitae, sagittis vel odio. Maecenas convallis ullamcorper ultricies. Curabitur ornare, ligula semper consectetur sagittis, nisi diam iaculis velit, id fringilla sem nunc vel mi. Nam dictum, odio nec pretium volutpat, arcu ante placerat erat, non tristique elit urna et turpis. Quisque mi metus, ornare sit amet fermentum et, tincidunt et orci. Fusce eget orci a orci congue vestibulum. Ut dolor diam, elementum et vestibulum eu, porttitor vel elit. Curabitur venenatis pulvinar tellus gravida ornare. Sed et erat faucibus nunc euismod ultricies ut id justo. Nullam cursus suscipit nisi, et ultrices justo sodales nec. Fusce venenatis facilisis lectus ac semper. Aliquam at massa ipsum. Quisque bibendum purus convallis nulla ultrices ultricies. Nullam aliquam, mi eu aliquam tincidunt, purus velit laoreet tortor, viverra pretium nisi quam vitae mi. Fusce vel volutpat elit. Nam sagittis nisi dui.
-
-
-      </Text> :
-                 <ActivityIndicatorIOS size="large" color="red" /> }
-      </ScrollView>
+      <Animated.View style={{opacity, transform: [{rotate}]}} />
     );
   }
 
 });
+
 
 var styles = StyleSheet.create({
   // base: {
@@ -104,30 +129,30 @@ var styles = StyleSheet.create({
 
   // },
   container: {
-    // alignItems: 'flex-start',
-    // backgroundColor: '#FF7E7E',
-    // flex: 100,
+    alignItems: 'flex-start',
+    backgroundColor: '#FF7E7E',
+    flex: 100,
   },
-  scrollContainer: {
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
+  // scrollContainer: {
+  //   flexDirection: 'column',
+  //   justifyContent: 'center',
+  //   alignItems: 'center',
+  //   justifyContent: 'center',
 
-  },
-  welcome: {
-    color: '#666',
-    fontSize: 20,
-    fontWeight: '300',
-    marginTop: 16,
+  // },
+  // welcome: {
+  //   color: '#666',
+  //   fontSize: 20,
+  //   fontWeight: '300',
+  //   marginTop: 16,
 
-  },
-  counter: {
-    color: '#777',
-    fontSize: 20,
-    fontWeight: '300',
-    marginTop: 16,
-  },
+  // },
+  // counter: {
+  //   color: '#777',
+  //   fontSize: 20,
+  //   fontWeight: '300',
+  //   marginTop: 16,
+  // },
 });
 
 
